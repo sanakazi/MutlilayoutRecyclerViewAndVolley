@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.sanakazi.recyclerandvolleyexampleproject.R;
 import com.example.sanakazi.recyclerandvolleyexampleproject.adapters.RecyclerViewAdapter;
 import com.example.sanakazi.recyclerandvolleyexampleproject.pojos.ContactsJson;
+import com.example.sanakazi.recyclerandvolleyexampleproject.singleton.MySingleton;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -76,12 +77,13 @@ public class RecyclerViewFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.w("TAG", error.toString());
-                    //    Toast.makeText(BuyServiceActivity.this,error.toString(),Toast.LENGTH_LONG).show();
 
                     }
                 });
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(stringRequest);
+
+
+// Add a request (in this example, called stringRequest) to your RequestQueue.
+        MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
 
         //Set a retry policy in case of SocketTimeout & ConnectionTimeout Exceptions.
         //Volley does retry for you if you have specified the policy.
