@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -57,7 +58,7 @@ public class RecyclerViewFragment extends Fragment {
 
                         ContactsJson responseJson = new Gson().fromJson(response.toString(), ContactsJson.class);
                       //  contactListArray = responseJson.getContacts();
-                        contactList = new ArrayList<ContactsJson.Contacts>(Arrays.asList(responseJson.getContacts()));
+                        contactList = new ArrayList<>(Arrays.asList(responseJson.getContacts()));
                         Log.w("contactList", contactList.toString());
                         Log.w("contactList at 1 ", contactList.get(1).getName() + " ");
 
@@ -81,5 +82,10 @@ public class RecyclerViewFragment extends Fragment {
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         requestQueue.add(stringRequest);
+
+        //Set a retry policy in case of SocketTimeout & ConnectionTimeout Exceptions.
+        //Volley does retry for you if you have specified the policy.
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(6000,
+                2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 }
