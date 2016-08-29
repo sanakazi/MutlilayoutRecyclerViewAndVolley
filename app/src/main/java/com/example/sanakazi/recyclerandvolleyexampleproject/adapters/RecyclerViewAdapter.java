@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sanakazi.recyclerandvolleyexampleproject.R;
 import com.example.sanakazi.recyclerandvolleyexampleproject.pojos.ContactsJson;
@@ -18,8 +19,14 @@ import java.util.ArrayList;
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>  {
 
+
+    public interface OnItemClickListener {
+        void onItemClick(ContactsJson.Contacts usersList);
+    }
+
     private final ArrayList<ContactsJson.Contacts> usersList;
     private final Context context;
+
 
     public RecyclerViewAdapter(Context context, ArrayList<ContactsJson.Contacts> usersList) {
         this.context=context;
@@ -35,7 +42,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         ContactsJson.Contacts contact = usersList.get(position);
         holder.name.setText(contact.getName().toString());
@@ -43,6 +50,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.number.setText(contact.getPhone().getMobile().toString());
 
         Log.w("adapter name are " , contact.getName().toString() );
+
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context," you clicked at position " + position , Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
